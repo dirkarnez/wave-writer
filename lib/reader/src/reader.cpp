@@ -36,6 +36,65 @@ struct WavHeader {
     unsigned long dataChunkSize;
 };
 
+/*
+struct WAVHeader {
+  char chunkId[4];          // 4 bytes
+  uint32_t chunkSize;       // 4 bytes
+  char format[4];           // 4 bytes
+  char subchunk1Id[4];      // 4 bytes
+  uint32_t subchunk1Size;   // 4 bytes
+  uint16_t audioFormat;     // 2 bytes
+  uint16_t numChannels;     // 2 bytes
+  uint32_t sampleRate;      // 4 bytes
+  uint32_t byteRate;        // 4 bytes
+  uint16_t blockAlign;      // 2 bytes
+  uint16_t bitsPerSample;   // 2 bytes
+  char subchunk2Id[4];      // 4 bytes
+  uint32_t subchunk2Size;   // 4 bytes
+};*/
+
+
+/*
+https://github.com/hypevhs/brrtools/blob/2671a2f818755d0a7c5844db4ef37e8852cbbdc1/brr.c#L62
+void generate_wave_file(FILE *outwav, unsigned int samplerate, pcm_t *buffer, size_t k)
+{
+	struct
+	{
+		char chunk_ID[4];				// Should be 'RIFF'
+		u32 chunk_size;
+		char wave_str[4];				// Should be 'WAVE'
+		char sc1_id[4];					// Should be 'fmt '
+		u32 sc1size;					// Should be at least 16
+		u16 audio_format;				// Should be 1 for PCM
+		u16 chans;						// 1 for mono, 2 for stereo, etc...
+		u32 sample_rate;
+		u32 byte_rate;
+		u16 block_align;
+		u16 bits_per_sample;
+		char sc2_id[4];
+		u32 sc2size;
+	}
+	hdr =
+	{
+		.chunk_ID = "RIFF",
+		.chunk_size = 32*k + 36,
+		.wave_str = "WAVE",
+		.sc1_id = "fmt ",
+		.sc1size = 16,				//Size of header
+		.audio_format = 1,			//PCM format, no compression
+		.chans = 1,					//Mono
+		.sample_rate = samplerate,	//Sample rate
+		.byte_rate = 2*samplerate,	//Byte rate
+		.block_align = 2,			//BlockAlign
+		.bits_per_sample = 16,		//16-bit samples
+		.sc2_id = "data",
+		.sc2size = 32*k
+	};
+	fwrite(&hdr, 1, sizeof(hdr), outwav);	// Write header
+	fwrite(buffer, 2, 16*k, outwav); 		//write samplebuffer to file
+}
+*/
+
 // Utility function to just print out some metadata.
 void displayWavFileInfo(WavHeader& file) {
     cout << "Header chunk ID: " << string (file.riffId) << endl;
